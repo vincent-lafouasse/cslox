@@ -45,6 +45,14 @@ public enum TokenType
 	Eof,
 }
 
+internal static class ExitCodes
+{
+	public const int Success = 0;
+	public const int Usage = 64;    // EX_USAGE
+	public const int DataErr = 65;  // EX_DATAERR
+	public const int Software = 70; // EX_SOFTWARE
+}
+
 static class Lox
 {
 	static bool hadError = false;
@@ -54,7 +62,7 @@ static class Lox
         if (args.Length > 1)
         {
             Console.Error.WriteLine($"Usage: Lox [script]");
-            return 1;
+            return ExitCodes.Usage;
         }
 
         if (args.Length == 1)
@@ -72,7 +80,12 @@ static class Lox
     private static void RunFile(string path)
     {
         string source = File.ReadAllText(path); // throws
+        
         Lox.Run(source);
+        if (Lox.hadError)
+        {
+	        Environment.Exit(ExitCodes.DataErr);
+        }
     }
 
     private static void RunPrompt()
@@ -88,6 +101,7 @@ static class Lox
             }
 
             Lox.Run(line);
+            Lox.hadError = false; // don't kill the session on errors
         }
     }
 
