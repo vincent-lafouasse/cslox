@@ -9,7 +9,7 @@ static class Program
             Console.Error.WriteLine($"Usage: Lox [script]");
             return 1;
         }
-        
+
         if (args.Length == 1)
         {
             RunFile(args[0]);
@@ -39,7 +39,7 @@ static class Program
             {
                 return;
             }
-            
+
             Run(line);
         }
     }
