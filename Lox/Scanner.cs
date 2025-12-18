@@ -80,7 +80,8 @@ public class Scanner(string source)
 
     private void AddToken(TokenType type, object? literal = null)
     {
-        string lexeme = this._source[this._start..this._current];
+        int length = this._current - this._start;
+        string lexeme = this._source.Substring(this._start, length);
         this._tokens.Add(new Token(type, lexeme, literal, this._line));
     }
 
