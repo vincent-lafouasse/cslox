@@ -59,11 +59,11 @@ static class Lox
 
         if (args.Length == 1)
         {
-            RunFile(args[0]);
+            Lox.RunFile(args[0]);
         }
         else
         {
-            RunPrompt();
+            Lox.RunPrompt();
         }
 
         return 0;
@@ -72,7 +72,7 @@ static class Lox
     private static void RunFile(string path)
     {
         string source = File.ReadAllText(path); // throws
-        Run(source);
+        Lox.Run(source);
     }
 
     private static void RunPrompt()
@@ -87,7 +87,7 @@ static class Lox
                 return;
             }
 
-            Run(line);
+            Lox.Run(line);
         }
     }
 
