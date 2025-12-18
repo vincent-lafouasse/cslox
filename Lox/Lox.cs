@@ -56,7 +56,6 @@ internal static class ExitCodes
 	public const int Success = 0;
 	public const int Usage = 64;    // EX_USAGE
 	public const int DataErr = 65;  // EX_DATAERR
-	public const int Software = 70; // EX_SOFTWARE
 }
 
 static class Lox
@@ -80,7 +79,7 @@ static class Lox
             Lox.RunPrompt();
         }
 
-        return 0;
+        return ExitCodes.Success;
     }
 
     private static void RunFile(string path)
