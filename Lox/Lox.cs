@@ -74,6 +74,9 @@ static class Lox
         {
             Console.Out.WriteLine($"\t{token}");
         }
+
+        if (Lox._hadError)
+            return;
     }
 
     public static void Error(int line, string message)
