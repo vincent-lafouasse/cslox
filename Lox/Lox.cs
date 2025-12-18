@@ -47,6 +47,8 @@ public enum TokenType
 
 static class Lox
 {
+	static bool hadError = false;
+	
     public static int Main(string[] args)
     {
         if (args.Length > 1)
@@ -92,5 +94,16 @@ static class Lox
     private static void Run(string command)
     {
         Console.WriteLine($"Running:\n{command}");
+    }
+
+    static void Error(int line, string message)
+    {
+	    Lox.Report(line, "", message);
+    }
+
+    private static void Report(int line, string where, string message)
+    {
+	    Console.Error.WriteLine($"[line {line}] Error{where}: {message}");
+	    Lox.hadError = true;
     }
 }
