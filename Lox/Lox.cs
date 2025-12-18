@@ -1,6 +1,6 @@
 ﻿namespace Lox;
 
-static class Program
+static class Lox
 {
     public static int Main(string[] args)
     {
