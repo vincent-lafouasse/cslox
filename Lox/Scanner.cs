@@ -84,6 +84,18 @@ public class Scanner(string source)
         this._tokens.Add(new Token(type, lexeme, literal, this._line));
     }
 
+    private char Peek()
+    {
+        return this._source[this._current];
+    }
+
+    private char Advance()
+    {
+        char output = this.Peek();
+        this._current++;
+        return output;
+    }
+
     private bool IsEof()
     {
         return this._start >= this._source.Length;
