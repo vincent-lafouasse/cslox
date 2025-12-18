@@ -70,12 +70,18 @@ public class Scanner(string source)
             this.ScanNextToken();
         }
 
-        this._tokens.Add(new Token(TokenType.Eof, "", null , this._line));
+        this.AddToken(TokenType.Eof);
         return this._tokens;
     }
 
     private void ScanNextToken()
     {
+    }
+
+    private void AddToken(TokenType type, object? literal = null)
+    {
+        string lexeme = this._source[this._start..this._current];
+        this._tokens.Add(new Token(type, lexeme, literal, this._line));
     }
 
     private bool IsEof()
