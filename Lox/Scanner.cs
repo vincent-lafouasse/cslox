@@ -103,13 +103,23 @@ public class Scanner(string source)
 
     private char Peek()
     {
-        return this._source[this._current];
+        if (this.IsEof())
+        {
+            return '\0';
+        }
+        else
+        {
+            return this._source[this._current];
+        }
     }
 
     private char Advance()
     {
         char output = this.Peek();
-        this._current++;
+        if (!this.IsEof())
+        {
+            this._current++;
+        }
         return output;
     }
 
