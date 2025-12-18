@@ -1,4 +1,7 @@
-﻿namespace Lox;
+﻿using System;
+using System.IO;
+
+namespace Lox;
 
 internal static class ExitCodes
 {
