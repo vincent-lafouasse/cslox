@@ -76,6 +76,22 @@ public class Scanner(string source)
 
     private void ScanNextToken()
     {
+        char c = this.Advance();
+        switch (c) {
+            case '(': this.AddToken(TokenType.LParen); break;
+            case ')': this.AddToken(TokenType.RParen); break;
+            case '{': this.AddToken(TokenType.LBrace); break;
+            case '}': this.AddToken(TokenType.RBrace); break;
+            case ',': this.AddToken(TokenType.Comma); break;
+            case '.': this.AddToken(TokenType.Dot); break;
+            case '-': this.AddToken(TokenType.Minus); break;
+            case '+': this.AddToken(TokenType.Plus); break;
+            case ';': this.AddToken(TokenType.SemiColon); break;
+            case '*': this.AddToken(TokenType.Star); break;
+            default:
+                Lox.Error(this._line, $"Unexpected token: {c}");
+                break;
+        }
     }
 
     private void AddToken(TokenType type, object? literal = null)

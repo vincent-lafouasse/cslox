@@ -13,7 +13,7 @@ internal static class ExitCodes
 static class Lox
 {
 	private static bool _hadError = false;
-	
+
     public static int Main(string[] args)
     {
         if (args.Length > 1)
@@ -37,7 +37,7 @@ static class Lox
     private static void RunFile(string path)
     {
         string source = File.ReadAllText(path); // throws
-        
+
         Lox.Run(source);
         if (Lox._hadError)
         {
@@ -67,7 +67,7 @@ static class Lox
         Console.WriteLine($"Running:\n{command}");
     }
 
-    static void Error(int line, string message)
+    public static void Error(int line, string message)
     {
 	    Lox.Report(line, "", message);
     }
