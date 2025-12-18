@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Lox;
@@ -65,6 +66,14 @@ static class Lox
     private static void Run(string command)
     {
         Console.WriteLine($"Running:\n{command}");
+        Scanner scanner = new Scanner(command);
+        List<Token> tokens = scanner.ScanTokens();
+
+        Console.Out.WriteLine("Tokens:");
+        foreach (Token token in tokens)
+        {
+            Console.Out.WriteLine($"\t{token}");
+        }
     }
 
     public static void Error(int line, string message)
