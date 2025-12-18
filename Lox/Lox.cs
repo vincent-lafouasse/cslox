@@ -71,7 +71,7 @@ internal static class ExitCodes
 
 static class Lox
 {
-	static bool hadError = false;
+	private static bool _hadError = false;
 	
     public static int Main(string[] args)
     {
@@ -98,7 +98,7 @@ static class Lox
         string source = File.ReadAllText(path); // throws
         
         Lox.Run(source);
-        if (Lox.hadError)
+        if (Lox._hadError)
         {
 	        Environment.Exit(ExitCodes.DataErr);
         }
@@ -117,7 +117,7 @@ static class Lox
             }
 
             Lox.Run(line);
-            Lox.hadError = false; // don't kill the session on errors
+            Lox._hadError = false; // don't kill the session on errors
         }
     }
 
@@ -134,6 +134,6 @@ static class Lox
     private static void Report(int line, string where, string message)
     {
 	    Console.Error.WriteLine($"[line {line}] Error{where}: {message}");
-	    Lox.hadError = true;
+	    Lox._hadError = true;
     }
 }
