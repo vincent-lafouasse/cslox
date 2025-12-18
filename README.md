@@ -8,6 +8,6 @@ yet another crafting interpreters project
 
 this project is mainly for me to learn C# so here are C# references
 - [offical language reference](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/readme)
-- [ECMA-335 7th Edition/December 2023](https://ecma-international.org/wp-content/uploads/ECMA-334_7th_edition_december_2023.pdf)
+- [ECMA-334:2023](https://ecma-international.org/wp-content/uploads/ECMA-334_7th_edition_december_2023.pdf)
 - [dotnet API reference](https://learn.microsoft.com/en-us/dotnet/api/)
 - [dotnet source](https://source.dot.net)
