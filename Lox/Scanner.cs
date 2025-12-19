@@ -50,7 +50,8 @@ public enum TokenType
 
 public readonly record struct Token(
     TokenType Type,
-    string Lexeme,
+    int Start,
+    int Length,
     object? Literal,
     int Line);
 
@@ -98,9 +99,13 @@ public class Scanner(string source)
 
     private void AddToken(TokenType type, object? literal = null)
     {
+        this._tokens.Add(this.ExtractToken(type, literal));
+    }
+
+    private Token ExtractToken(TokenType type, object? literal = null)
+    {
         int length = this._current - this._start;
-        string lexeme = this._source.Substring(this._start, length);
-        this._tokens.Add(new Token(type, lexeme, literal, this._line));
+        return new Token(type, this._start, length, literal, this._line);
     }
 
     private char Peek()
