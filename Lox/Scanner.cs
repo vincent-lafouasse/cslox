@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Lox;
@@ -44,6 +45,29 @@ public readonly record struct ScannerError : IError
             }
         }
     }
+}
+
+// the lexing might return multiple errors
+// i would hate for the compiler to stop at the first error
+//
+// ScannerError is a record struct so the List should truly be contiguous
+public class ScannerErrorList : IError, IReadOnlyList<ScannerError>
+{
+    public const int MaxErrors = 100;
+    private readonly List<ScannerError> _errors;
+
+    public ScannerErrorList(List<ScannerError> errors) => _errors = errors;
+
+    // IError implementation
+    public string What => $"{_errors.Count} errors occurred.";
+    public int Line => _errors.Count > 0 ? _errors[0].Line : 0;
+
+    // IReadOnlyList implementation
+    public int Count => _errors.Count;
+    public ScannerError this[int index] => _errors[index];
+
+    public IEnumerator<ScannerError> GetEnumerator() => _errors.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator(); // legacy enumerator
 }
 
 public enum TokenType
