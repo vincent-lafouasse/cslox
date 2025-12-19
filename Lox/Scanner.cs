@@ -77,7 +77,8 @@ public class Scanner(string source)
     private void ScanNextToken()
     {
         char c = this.Advance();
-        switch (c) {
+        switch (c)
+        {
             case '(': this.AddToken(TokenType.LParen); break;
             case ')': this.AddToken(TokenType.RParen); break;
             case '{': this.AddToken(TokenType.LBrace); break;

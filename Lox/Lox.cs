@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -6,14 +6,14 @@ namespace Lox;
 
 internal static class ExitCodes
 {
-	public const int Success = 0;
-	public const int Usage = 64;    // EX_USAGE
-	public const int DataErr = 65;  // EX_DATAERR
+    public const int Success = 0;
+    public const int Usage = 64;    // EX_USAGE
+    public const int DataErr = 65;  // EX_DATAERR
 }
 
 static class Lox
 {
-	private static bool _hadError = false;
+    private static bool _hadError = false;
 
     public static int Main(string[] args)
     {
@@ -42,7 +42,7 @@ static class Lox
         Lox.Run(source);
         if (Lox._hadError)
         {
-	        Environment.Exit(ExitCodes.DataErr);
+            Environment.Exit(ExitCodes.DataErr);
         }
     }
 
@@ -81,12 +81,12 @@ static class Lox
 
     public static void Error(int line, string message)
     {
-	    Lox.Report(line, "", message);
+        Lox.Report(line, "", message);
     }
 
     private static void Report(int line, string where, string message)
     {
-	    Console.Error.WriteLine($"[line {line}] Error{where}: {message}");
-	    Lox._hadError = true;
+        Console.Error.WriteLine($"[line {line}] Error{where}: {message}");
+        Lox._hadError = true;
     }
 }
