@@ -2,6 +2,50 @@ using System.Collections.Generic;
 
 namespace Lox;
 
+public enum ScannerErrorCode
+{
+    UnexpectedChar,
+    UnterminatedString,
+    InvalidNumber
+}
+
+public readonly record struct ScannerError : IError
+{
+    private readonly int _line;
+    private readonly ScannerErrorCode _code;
+    private readonly char _data;
+
+    public ScannerError(int line, ScannerErrorCode code, char data = '\0')
+    {
+        _line = line;
+        _code = code;
+        _data = data;
+    }
+
+    public int Line
+    {
+        get { return _line; }
+    }
+
+    public string What
+    {
+        get
+        {
+            switch (_code)
+            {
+                case ScannerErrorCode.UnexpectedChar:
+                    return "Unexpected character: " + _data;
+                case ScannerErrorCode.UnterminatedString:
+                    return "Unterminated string";
+                case ScannerErrorCode.InvalidNumber:
+                    return "Invalid number";
+                default:
+                    return "Unknown Scanner Error";
+            }
+        }
+    }
+}
+
 public enum TokenType
 {
     LParen,
