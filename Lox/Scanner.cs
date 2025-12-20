@@ -57,49 +57,63 @@ public readonly record struct Token(
 
 public class Scanner(string source)
 {
+    public const int MaxErrors = 100;
+
     private readonly string _source = source;
     private readonly List<Token> _tokens = [];
+    private readonly List<ScannerError> _errors = [];
     private int _start = 0; // start of the current lexeme
     private int _current = 0; // position of the head
     private int _line = 1;
 
-    public List<Token> ScanTokens()
+    public Result<List<Token>> ScanTokens()
     {
-        while (!this.IsEof())
+        while (true)
         {
-            // new lexeme
-            this._start = this._current;
-            this.ScanNextToken();
+            var err = TryScanNextToken(out var token);
+
+            if (err is not null)
+            {
+                this._errors.Add(err.Value);
+                if (this._errors.Count >= Scanner.MaxErrors) break;
+            }
+            else this._tokens.Add(token);
+
+            if (token.Type == TokenType.Eof) break;
         }
 
-        this.AddToken(TokenType.Eof);
-        return this._tokens;
+        return this._errors.Count > 0
+            ? Result.Failure<List<Token>>(new ScannerErrorList(this._errors))
+            : Result.Success(this._tokens);
     }
 
-    private void ScanNextToken()
+    private ScannerError? TryScanNextToken(out Token token)
     {
+        if (!this.IsEof())
+        {
+            token = this.ExtractToken(TokenType.Eof);
+            return null;
+        }
+
         char c = this.Advance();
         switch (c)
         {
-            case '(': this.AddToken(TokenType.LParen); break;
-            case ')': this.AddToken(TokenType.RParen); break;
-            case '{': this.AddToken(TokenType.LBrace); break;
-            case '}': this.AddToken(TokenType.RBrace); break;
-            case ',': this.AddToken(TokenType.Comma); break;
-            case '.': this.AddToken(TokenType.Dot); break;
-            case '-': this.AddToken(TokenType.Minus); break;
-            case '+': this.AddToken(TokenType.Plus); break;
-            case ';': this.AddToken(TokenType.SemiColon); break;
-            case '*': this.AddToken(TokenType.Star); break;
+            case '(': token = this.ExtractToken(TokenType.LParen); break;
+            case ')': token = this.ExtractToken(TokenType.RParen); break;
+            case '{': token = this.ExtractToken(TokenType.LBrace); break;
+            case '}': token = this.ExtractToken(TokenType.RBrace); break;
+            case ',': token = this.ExtractToken(TokenType.Comma); break;
+            case '.': token = this.ExtractToken(TokenType.Dot); break;
+            case '-': token = this.ExtractToken(TokenType.Minus); break;
+            case '+': token = this.ExtractToken(TokenType.Plus); break;
+            case ';': token = this.ExtractToken(TokenType.SemiColon); break;
+            case '*': token = this.ExtractToken(TokenType.Star); break;
             default:
-                Lox.Error(this._line, $"Unexpected token: {c}");
-                break;
+                token = default;
+                return new ScannerError(this._line, ScannerErrorCode.UnexpectedChar, c);
         }
-    }
 
-    private void AddToken(TokenType type, object? literal = null)
-    {
-        this._tokens.Add(this.ExtractToken(type, literal));
+        return null;
     }
 
     private Token ExtractToken(TokenType type, object? literal = null)
@@ -186,7 +200,6 @@ public readonly record struct ScannerError : IError
 // ScannerError is a record struct so the List should truly be contiguous
 public class ScannerErrorList : IError, IReadOnlyList<ScannerError>
 {
-    public const int MaxErrors = 100;
     private readonly List<ScannerError> _errors;
 
     public ScannerErrorList(List<ScannerError> errors) => _errors = errors;
