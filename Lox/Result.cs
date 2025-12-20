@@ -2,6 +2,12 @@ using System;
 
 namespace Lox;
 
+public static class Result
+{
+    public static Result<T> Success<T>(T value) => new(value);
+    public static Result<T> Failure<T>(IError error) => new(error);
+}
+
 public readonly struct Result<T>
 {
     // yes this isn't truly a sum type, i'm annoyed as well
